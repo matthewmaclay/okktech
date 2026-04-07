@@ -1,0 +1,37 @@
+id: CHG-0001
+title: "Лимит ходов в тренировочной сессии"
+status: done
+
+created: 2026-03-15
+updated: 2026-04-02
+
+owners:
+  product: "Анна Петрова"
+  backend: "Иван Сидоров"
+  frontend: "Мария Козлова"
+  qa: "Дмитрий Волков"
+
+domains: [training-session]
+capabilities: [тренировка]
+
+code_refs:
+  backend: [src/modules/training-session/]
+  frontend: [src/features/session/]
+
+related_adrs: []
+related_changes: []
+pr_links: [PR-142, PR-147]
+
+blocked_by: ""
+
+open_questions:
+  - question: "Показываем ли счётчик оставшихся ходов пользователю?"
+    asked_by: "Анна Петрова"
+    date: "2026-03-16"
+    status: answered
+    answer: "Да, показываем в UI как прогресс-бар. Решение от 2026-03-18."
+  - question: "Что происходит при потере связи на последнем ходу?"
+    asked_by: "Иван Сидоров"
+    date: "2026-03-17"
+    status: answered
+    answer: "Turn остаётся в pending_ai, фоновый процесс доставляет при reconnect."

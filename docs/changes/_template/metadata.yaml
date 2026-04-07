@@ -1,0 +1,34 @@
+id: CHG-XXXX
+title: ""
+status: draft
+# status: draft | discovery | spec | analysis | in-progress | done
+
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+
+owners:
+  product: ""
+  backend: ""
+  frontend: ""
+  qa: ""
+
+domains: []
+capabilities: []
+
+code_refs:
+  backend: []
+  frontend: []
+
+related_adrs: []
+related_changes: []
+pr_links: []
+
+blocked_by: ""
+
+open_questions:
+  - question: ""
+    asked_by: ""
+    date: ""
+    status: open
+    # status: open | answered
+    answer: ""

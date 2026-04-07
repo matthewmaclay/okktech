@@ -1,0 +1,9 @@
+services:
+  gramax:
+    image: docker.io/gramax/gramax-editor:latest
+    container_name: okkpro-docs
+    restart: unless-stopped
+    ports:
+      - "${GRAMAX_PORT:-3000}:80"
+    volumes:
+      - ./docs:/app/data
