@@ -1,3 +1,11 @@
+---
+type: ubiquitous-language
+domain: training-session
+tags:
+  - domain/training-session
+  - language
+---
+
 # Ubiquitous language · Training Session
 
 | Term | Definition | Forbidden synonyms | Conflicts with |

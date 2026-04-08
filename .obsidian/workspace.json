@@ -1,0 +1,222 @@
+{
+  "main": {
+    "id": "8e1b2d0f4989e85d",
+    "type": "split",
+    "children": [
+      {
+        "id": "ab39ea2fb2d42cd1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7d2c93e04dcd73c9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/_meta/glossary.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "glossary"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "877d1716bf09aaa5",
+    "type": "split",
+    "children": [
+      {
+        "id": "aec23c746f1b5ef6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2514584e56a4e3d7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "ea730cbc70e75330",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "permis",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "2c7214d000520f96",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "02a332e0fa16c094",
+    "type": "split",
+    "children": [
+      {
+        "id": "887ebde933107dda",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0aa9538dcbbff7ae",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "docs/_meta/glossary.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for glossary"
+            }
+          },
+          {
+            "id": "0fbf982ef81955fe",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "docs/_meta/glossary.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from glossary"
+            }
+          },
+          {
+            "id": "f725a2b80b0ee408",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "1329957222e54b51",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "976ac29fb639932a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "docs/_meta/glossary.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of glossary"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "7d2c93e04dcd73c9",
+  "lastOpenFiles": [
+    "docs/changes/_golden/release-notes.md",
+    "docs/changes/_golden/10-open-questions.md",
+    "docs/changes/_golden/09-decisions.md",
+    "docs/changes/_golden/08-rollout.md",
+    "docs/changes/_golden/07-test-plan.md",
+    "docs/changes/_golden/06-frontend-proposal.md",
+    "docs/changes/_golden/05-backend-proposal.md",
+    "docs/changes/_golden/04-system-analysis.md",
+    "docs/changes/_golden/03-domain-impact.md",
+    "docs/changes/_golden/02-product-spec.md",
+    "docs/_meta/eval-criteria.md",
+    "docs/changes/_golden/01-discovery.md",
+    "docs/_meta/test-scenarios.md",
+    "docs/changes/_golden/change-draft.md",
+    "docs/changes/_golden/index.md",
+    "docs/changes/_golden/metadata.yaml",
+    "docs/changes/_golden",
+    "docs/_meta/onboarding.md",
+    "docs/_meta/domain-map.md",
+    "docs/_meta/domain-map.canvas",
+    "docs/_meta/architecture-principles.md",
+    "docs/adrs/_template.md",
+    "docs/adrs/_example.md",
+    "docs/domains/training-session/ubiquitous-language.md",
+    "docs/domains/training-session/ownership.md",
+    "docs/domains/training-session/invariants.md",
+    "docs/domains/training-session/integrations.md",
+    "docs/domains/training-session/events.md",
+    "docs/domains/training-session/business-rules.md",
+    "Untitled.canvas",
+    "Untitled.base",
+    "docs/changes/CHG-0001/metadata.yaml",
+    "docs/changes/CHG-0001"
+  ]
+}

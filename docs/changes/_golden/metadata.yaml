@@ -1,0 +1,56 @@
+id: CHG-0000
+title: "Система ретроспективы сессии"
+status: done
+
+created: 2026-04-08
+updated: 2026-04-08
+
+owners:
+  product: "Анна Петрова"
+  backend: "Иван Сидоров"
+  frontend: "Мария Козлова"
+  qa: "Дмитрий Волков"
+
+domains:
+  - training-session
+
+capabilities:
+  - retrospective
+  - feedback
+
+code_refs:
+  backend:
+    - src/modules/training-session/retrospective/
+    - src/modules/training-session/retrospective/retrospective.service.ts
+    - src/modules/training-session/retrospective/retrospective.controller.ts
+  frontend:
+    - src/features/session-results/RetrospectivePanel.tsx
+    - src/features/session-results/hooks/useRetrospective.ts
+
+related_adrs: []
+
+related_changes: []
+
+pr_links:
+  - https://github.com/okktech/ai-web-studio/pull/42
+
+blocked_by: ""
+
+conflicts_with: []
+
+open_questions:
+  - question: "Нужно ли ограничивать длину рекомендаций от LLM?"
+    asked_by: "Анна Петрова"
+    date: "2026-04-08"
+    status: answered
+    answer: "Да, максимум 3 рекомендации по 280 символов каждая. Это покрывает основные инсайты без перегрузки пользователя."
+  - question: "Хранить анализ каждого хода отдельно или единым блоком?"
+    asked_by: "Иван Сидоров"
+    date: "2026-04-08"
+    status: answered
+    answer: "Отдельно по каждому ходу (массив TurnAnalysis) + общие рекомендации. Это позволяет показывать анализ при навигации по ходам."
+  - question: "Нужна ли возможность регенерации ретроспективы?"
+    asked_by: "Мария Козлова"
+    date: "2026-04-08"
+    status: answered
+    answer: "Нет. Ретроспектива генерируется один раз и кешируется навсегда. Регенерация создаёт путаницу — пользователь может получить разные оценки одних и тех же ходов."

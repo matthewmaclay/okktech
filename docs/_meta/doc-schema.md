@@ -51,18 +51,107 @@ Stage 07 · Test + rollout    → 07-test-plan.md + 08-rollout.md + 09-decisions
 Stage 08 · PR → merge        → PR refs + release-notes.md + обновлённые domain docs
 ```
 
-## AI role per stage
+## AI Studio · Roles & Skills
+
+AI-роли реализованы как Claude Code Skills. Каждая роль — отдельный скилл с уникальной экспертизой и тоном.
+
+### Roles
 
 ```
-Stage 00: Генерирует черновик из текста запроса на фичу
-Stage 01: Задаёт вопросы об актёрах и edge cases
-Stage 02: Проверяет полноту AC, находит неопределённые состояния
-Stage 03: Маппит фичу на domain docs, находит конфликты инвариантов
-Stage 04: Генерирует черновик API-контрактов из domain impact
-Stage 05: Генерирует черновик из system analysis
-Stage 06: Генерирует черновик UI-состояний из product spec
-Stage 07: Генерирует тест-кейсы из acceptance criteria
-Stage 08: Проверяет PR на соответствие спеке, находит расхождения
+┌─────────────────┐     ┌──────────────────┐     ┌────────────────┐
+│  /pm             │────▶│  /analyst         │────▶│  /backend      │
+│  Product Manager │     │  System Analyst & │     │  Backend       │
+│  Intake + draft  │     │  Domain Architect │     │  Architect     │
+│                  │     │  Discovery + Spec │     │                │
+│                  │     │  + Domain Impact  │     │                │
+└─────────────────┘     └──────────────────┘     └───────┬────────┘
+                                                          │
+                         ┌──────────────┐         ┌───────▼────────┐
+                         │  /qa         │◀────────│  /frontend     │
+                         │  QA Engineer │         │  Frontend      │
+                         │  Test plan + │         │  Architect     │
+                         │  Rollout     │         │                │
+                         └──────────────┘         └────────────────┘
+```
+
+### Skill reference
+
+| Skill | Role | Input | Output | Tone |
+|-------|------|-------|--------|------|
+| `/pm` | Product Manager | Описание фичи | change-draft.md, metadata.yaml, Linear issue | Дружелюбный, настойчивый |
+| `/analyst` | System Analyst & Domain Architect | CHG-XXXX | 01-discovery.md, 02-product-spec.md, 03-domain-impact.md, обновлённые domain docs | Педант + DDD-эксперт |
+| `/backend` | Backend Architect | CHG-XXXX | 04-system-analysis.md, 05-backend-proposal.md | Прагматик |
+| `/frontend` | Frontend Architect | CHG-XXXX | 06-frontend-proposal.md | UX-перфекционист |
+| `/qa` | QA Engineer | CHG-XXXX | 07-test-plan.md, 08-rollout.md | Параноик |
+| `/review` | Reviewer | CHG-XXXX | Отчёт с cross-reference issues | Жёсткий code reviewer |
+| `/new-feature` | Orchestrator | Описание фичи | Полный change package (все этапы) | Меняет роль на каждом этапе |
+| `/bug` | Bug Hunter | Баг / Sentry URL | Root cause + fix proposal | Шерлок Холмс |
+| `/new-domain` | DDD Architect | domain-name | Полный набор domain docs | Строгий коуч |
+| `/sync-linear` | Sync | CHG-XXXX / all | Linear issues синхронизированы | Исполнитель |
+
+### Usage patterns
+
+**Full pipeline (новая фича):**
+```
+/new-feature добавить систему оценки тренировок
+```
+Или поэтапно:
+```
+/pm добавить систему оценки тренировок
+/analyst CHG-0002
+/backend CHG-0002
+/frontend CHG-0002
+/qa CHG-0002
+/review CHG-0002
+```
+
+**Bug investigation:**
+```
+/bug https://sentry.io/issues/PROJ-123/
+/bug при завершении сессии не обновляется счётчик
+```
+
+**New domain:**
+```
+/new-domain assessment
+```
+
+**Sync with Linear:**
+```
+/sync-linear CHG-0002
+/sync-linear all
+```
+
+### AI role per stage
+
+```
+Stage 00 · /pm       → Генерирует черновик, задаёт бизнес-вопросы
+Stage 01 · /analyst  → Находит edge cases, определяет актёров, ломает happy path
+Stage 02 · /analyst  → Проверяет полноту AC, находит неопределённые состояния
+Stage 03 · /analyst  → Маппит на домены, проверяет инварианты, обновляет domain docs
+Stage 04 · /backend  → API контракты, DB impact, failure modes
+Stage 05 · /backend  → Backend proposal с migration plan
+Stage 06 · /frontend → UI states, permissions, a11y, analytics
+Stage 07 · /qa       → Test cases из AC, rollout strategy
+Stage 08 · /review   → Cross-reference check, completeness audit
+```
+
+### Iteration rules
+
+На ЛЮБОМ этапе роль может обнаружить проблему в предыдущем этапе:
+
+1. Зафиксировать в `10-open-questions.md`
+2. Если проблема критическая (меняет scope/spec) — СТОП, уведомить пользователя
+3. Если некритическая — зафиксировать и продолжить
+4. При возврате на предыдущий этап — каскадное обновление всех downstream документов
+
+```
+/backend находит проблему в product spec
+    → обновляет 10-open-questions.md
+    → пользователь решает: "исправить"
+    → обновляется 02-product-spec.md
+    → перепроверяется 03-domain-impact.md
+    → обновляется 05-backend-proposal.md
 ```
 
 ## What lives where

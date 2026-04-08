@@ -1,3 +1,14 @@
+---
+type: domain
+domain: training-session
+status: active
+owner: platform-team
+tags:
+  - domain
+  - core
+created: 2026-03-15
+---
+
 # Training Session
 
 ## What is this domain

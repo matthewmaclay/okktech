@@ -19,3 +19,8 @@
 
 ## Fallback strategy
 -
+
+## OpenAPI spec
+<!-- Если change включает API endpoints — сгенерирован openapi.yaml -->
+<!-- Если API endpoints не затронуты — эта секция не заполняется -->
+Spec: [[openapi.yaml]]

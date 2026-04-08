@@ -25,6 +25,16 @@ pr_links: []
 
 blocked_by: ""
 
+conflicts_with: []
+  # - id: CHG-XXXX
+  #   domains: []
+  #   detected: YYYY-MM-DD
+  #   resolution: pending  # pending | resolved
+  #   resolution_note: ""
+
+retroactive: false
+retroactive_note: ""
+
 open_questions:
   - question: ""
     asked_by: ""

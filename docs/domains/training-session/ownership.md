@@ -1,3 +1,10 @@
+---
+type: ownership
+domain: training-session
+tags:
+  - domain/training-session
+---
+
 # Ownership · Training Session
 
 ## Owner

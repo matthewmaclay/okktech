@@ -1,3 +1,13 @@
+---
+type: domain
+domain: DOMAIN_NAME
+status: draft
+owner: ""
+tags:
+  - domain
+created: YYYY-MM-DD
+---
+
 # [Domain name]
 
 ## What is this domain

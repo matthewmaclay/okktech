@@ -1,0 +1,87 @@
+# Stage gate definitions
+# Used by validate-change-docs.sh to enforce transition rules
+
+stages:
+  draft:
+    exit_criteria:
+      - file: change-draft.md
+        check: has_content
+        description: "change-draft.md заполнен (не placeholder)"
+      - file: metadata.yaml
+        field: title
+        check: field_not_empty
+        description: "metadata.yaml имеет title"
+      - file: metadata.yaml
+        field: owners.product
+        check: field_not_empty
+        description: "metadata.yaml имеет product owner"
+
+  discovery:
+    exit_criteria:
+      - file: 01-discovery.md
+        check: has_content
+        description: "01-discovery.md заполнен"
+      - file: 01-discovery.md
+        check: table_has_rows
+        section: Actors
+        min_rows: 1
+        description: "Actors table имеет данные"
+      - file: 01-discovery.md
+        check: list_min_items
+        section: "Happy path"
+        min_items: 3
+        description: "Happy path >= 3 шага"
+      - file: 01-discovery.md
+        check: list_min_items
+        section: "Edge cases"
+        min_items: 3
+        description: "Edge cases >= 3"
+
+  spec:
+    exit_criteria:
+      - file: 02-product-spec.md
+        check: has_content
+        description: "02-product-spec.md заполнен"
+      - file: 02-product-spec.md
+        check: checklist_min_items
+        section: "Acceptance criteria"
+        min_items: 5
+        description: "Acceptance criteria >= 5 пунктов"
+      - file: 02-product-spec.md
+        check: section_has_content
+        section: "Flows"
+        description: "Flows секция заполнена"
+
+  analysis:
+    exit_criteria:
+      - file: 03-domain-impact.md
+        check: has_content
+        description: "03-domain-impact.md заполнен"
+      - file: 04-system-analysis.md
+        check: has_content
+        description: "04-system-analysis.md заполнен"
+      - file: 05-backend-proposal.md
+        check: has_content
+        description: "05-backend-proposal.md заполнен"
+      - file: metadata.yaml
+        field: domains
+        check: array_not_empty
+        description: "metadata.yaml.domains не пустой"
+
+  in-progress:
+    exit_criteria:
+      - file: 06-frontend-proposal.md
+        check: has_content
+        description: "06-frontend-proposal.md заполнен"
+      - file: 07-test-plan.md
+        check: has_content
+        description: "07-test-plan.md заполнен"
+      - file: 08-rollout.md
+        check: has_content
+        description: "08-rollout.md заполнен"
+      - file: release-notes.md
+        check: has_content
+        description: "release-notes.md заполнен"
+      - file: 10-open-questions.md
+        check: no_blocking_questions
+        description: "Нет вопросов с тегом [BLOCKING]"
