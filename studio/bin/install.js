@@ -16,9 +16,29 @@ const STUDIO_MARKER = '<!-- @okktech/studio -->';
 
 // Parse args
 const args = process.argv.slice(2);
-const mode = args.includes('--uninstall') || args.includes('-u') ? 'uninstall'
+const mode = args.includes('--help') || args.includes('-h') ? 'help'
+           : args.includes('--uninstall') || args.includes('-u') ? 'uninstall'
            : args.includes('--init') ? 'init'
-           : 'global';
+           : args.includes('--global') || args.includes('-g') || args.length === 0 ? 'global'
+           : 'help';
+
+if (mode === 'help') {
+  console.log(`@okktech/studio v${VERSION}`);
+  console.log('');
+  console.log('Usage:');
+  console.log('  okktech-studio                Install globally to ~/.claude/studio/');
+  console.log('  okktech-studio --global       Same as above');
+  console.log('  okktech-studio --init         Scaffold project structure in current directory');
+  console.log('  okktech-studio --uninstall    Remove all studio files from ~/.claude/');
+  console.log('  okktech-studio --help         Show this help');
+  console.log('');
+  console.log('After install:');
+  console.log('  /studio-pm [feature]          Start new feature');
+  console.log('  /studio-status                Check pipeline position');
+  console.log('  /studio-feature [feature]     Full pipeline (PM→QA)');
+  console.log('  /studio-onboard [path]        Onboard existing project');
+  process.exit(0);
+}
 
 console.log(`@okktech/studio v${VERSION}`);
 console.log(`Mode: ${mode}`);
@@ -102,7 +122,7 @@ function installGlobal() {
   console.log('');
   console.log('Next steps:');
   console.log('  cd your-project');
-  console.log('  npx @okktech/studio --init     # Scaffold project structure');
+  console.log('  okktech-studio --init           # Scaffold project structure');
   console.log('  /studio-pm [feature description]  # Start working');
 }
 
