@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "ab39ea2fb2d42cd1",
+        "id": "b0a60140e75cdfc2",
         "type": "tabs",
         "children": [
           {
-            "id": "7d2c93e04dcd73c9",
+            "id": "19ba5cca0072a662",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "docs/_meta/glossary.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "glossary"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "docs/_meta/glossary.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for glossary"
+              "title": "Backlinks"
             }
           },
           {
@@ -113,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "docs/_meta/glossary.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from glossary"
+              "title": "Outgoing links"
             }
           },
           {
@@ -156,13 +150,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/_meta/glossary.md",
+                "file": "docs/domains/cross-cutting/aggregates.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of glossary"
+              "title": "Outline of aggregates"
             }
           }
         ]
@@ -183,40 +177,56 @@
       "bases:Create new base": false
     }
   },
-  "active": "7d2c93e04dcd73c9",
+  "active": "2514584e56a4e3d7",
   "lastOpenFiles": [
-    "docs/changes/_golden/release-notes.md",
-    "docs/changes/_golden/10-open-questions.md",
-    "docs/changes/_golden/09-decisions.md",
-    "docs/changes/_golden/08-rollout.md",
-    "docs/changes/_golden/07-test-plan.md",
-    "docs/changes/_golden/06-frontend-proposal.md",
-    "docs/changes/_golden/05-backend-proposal.md",
-    "docs/changes/_golden/04-system-analysis.md",
-    "docs/changes/_golden/03-domain-impact.md",
-    "docs/changes/_golden/02-product-spec.md",
-    "docs/_meta/eval-criteria.md",
-    "docs/changes/_golden/01-discovery.md",
-    "docs/_meta/test-scenarios.md",
-    "docs/changes/_golden/change-draft.md",
-    "docs/changes/_golden/index.md",
-    "docs/changes/_golden/metadata.yaml",
-    "docs/changes/_golden",
-    "docs/_meta/onboarding.md",
-    "docs/_meta/domain-map.md",
+    "studio/agents/studio-domain-merger.md",
+    "studio/templates/domain/changelog.md",
+    "studio/templates/domain/operational-sla.md",
+    "studio/templates/domain/data-model.md",
+    "studio/templates/domain/api-contracts.md",
+    "studio/templates/domain/changes",
+    "studio/hooks/studio-conflict-detect.sh",
+    "studio/hooks/studio-session-state.sh",
+    "studio/hooks/studio-prompt-guard.js",
+    "studio/hooks/studio-domain-guard.sh",
+    "studio/hooks/studio-stage-gate.sh",
+    "studio/hooks/studio-context-monitor.js",
+    "studio/workflows/onboard-project.md",
+    "studio/commands/studio/bug.md",
+    "studio/commands/studio/sync.md",
+    "studio/commands/studio/resume.md",
+    "studio/commands/studio/status.md",
+    "studio/commands/studio/verify.md",
+    "studio/commands/studio/review.md",
+    "studio/workflows/domain-update.md",
+    "studio/commands/studio/new-domain.md",
+    "studio/workflows/conflict-resolution.md",
+    "studio/workflows/verify-change.md",
+    "studio/workflows/map-codebase.md",
+    "studio/commands/studio/onboard.md",
+    "studio/workflows/pipeline-resume.md",
+    "studio/workflows/pipeline-full.md",
+    "studio/commands/studio/feature.md",
+    "studio/commands/studio/qa.md",
+    "studio/commands/studio/frontend.md",
+    "studio/commands/studio/backend.md",
+    "studio/commands/studio/designer.md",
+    "studio/commands/studio/analyst.md",
+    "studio/templates/change/mockups/template.html",
+    "studio/templates/change/metadata.yaml",
+    "studio/templates/config.json",
+    "get-shit-done/assets/terminal.svg",
+    "get-shit-done/assets/gsd-logo-2000.svg",
+    "get-shit-done/assets/gsd-logo-2000.png",
+    "get-shit-done/assets/gsd-logo-2000-transparent.svg",
+    "get-shit-done/assets/gsd-logo-2000-transparent.png",
+    "docs/Untitled.canvas",
+    "codebase/services/claw/node_modules/@discordjs/opus/deps/opus/doc/opus_logo.svg",
+    "codebase/services/claw/node_modules/playwright-core/lib/vite/traceViewer/playwright-logo.svg",
+    "codebase/services/claw/node_modules/playwright-core/lib/vite/recorder/playwright-logo.svg",
+    "codebase/services/claw/node_modules/playwright-core/lib/server/chromium/appIcon.png",
+    "codebase/services/claw/node_modules/pdfjs-dist/legacy/web/images/treeitem-expanded.svg",
     "docs/_meta/domain-map.canvas",
-    "docs/_meta/architecture-principles.md",
-    "docs/adrs/_template.md",
-    "docs/adrs/_example.md",
-    "docs/domains/training-session/ubiquitous-language.md",
-    "docs/domains/training-session/ownership.md",
-    "docs/domains/training-session/invariants.md",
-    "docs/domains/training-session/integrations.md",
-    "docs/domains/training-session/events.md",
-    "docs/domains/training-session/business-rules.md",
-    "Untitled.canvas",
-    "Untitled.base",
-    "docs/changes/CHG-0001/metadata.yaml",
-    "docs/changes/CHG-0001"
+    "Untitled.canvas"
   ]
 }

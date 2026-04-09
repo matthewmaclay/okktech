@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "role": "fullstack",
+  "model_profile": "balanced",
+  "handoff_mode": "branch",
+  "autonomous_allowed": false,
+  "obsidian_integration": true,
+  "language": "ru",
+  "stage_pipeline": ["draft", "discovery", "spec", "analysis", "design", "in-progress", "done"],
+  "roles": {
+    "pm": { "commands": ["pm", "feature", "status", "sync"] },
+    "analyst": { "commands": ["analyst", "new-domain", "status", "review"] },
+    "designer": { "commands": ["designer", "status"] },
+    "backend": { "commands": ["backend", "bug", "status", "verify"] },
+    "frontend": { "commands": ["frontend", "bug", "status", "verify"] },
+    "qa": { "commands": ["qa", "review", "status", "verify"] },
+    "fullstack": { "commands": ["*"] }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "@okktech/studio",
+  "version": "0.1.0",
+  "description": "Documentation-driven development platform with DDD domains, multi-role pipeline, and AI agents. Fresh context per agent, Obsidian integration, stage gates.",
+  "license": "MIT",
+  "bin": {
+    "okktech-studio": "bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "agents/",
+    "commands/",
+    "workflows/",
+    "hooks/",
+    "templates/",
+    "references/",
+    "sdk/",
+    "rules/"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "test": "node --test tests/**/*.test.cjs",
+    "test:coverage": "c8 --lines 70 node --test tests/**/*.test.cjs",
+    "postinstall": "node bin/install.js --global"
+  },
+  "keywords": [
+    "claude-code",
+    "ai-agents",
+    "documentation",
+    "ddd",
+    "domain-driven-design",
+    "obsidian",
+    "spec-driven",
+    "multi-agent"
+  ]
+}

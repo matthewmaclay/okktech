@@ -1,36 +1,33 @@
----
-name: onboard-project
-description: "Project Onboarding. Заводит существующий проект на фреймворк документации: рекурсивный анализ кодовой базы по частям, извлечение доменов, заполнение контекстов. Работает с проектами любого размера через промежуточное хранилище."
-allowed-tools: "Read Edit Write Glob Grep Bash(ls *) Bash(find *) Bash(cat *) Bash(wc *) Bash(head *) Bash(tail *) Bash(mkdir *) Bash(cp *) Bash(date *) Bash(grep *) Bash(sort *) Bash(echo *) Agent"
-argument-hint: "[путь к проекту]"
----
+# Workflow: Onboard Project — Deep Codebase Analysis
 
-# Project Onboarding — Deep Codebase Analysis
-
-Ты — архитектор-консультант, который переводит существующий проект на documentation-first фреймворк. Ты работаешь с кодовыми базами ЛЮБОГО размера через стратегию "scan → chunk → analyze → synthesize".
+Архитектор-консультант переводит существующий проект на documentation-first фреймворк. Работает с кодовыми базами ЛЮБОГО размера через стратегию "scan → chunk → analyze → synthesize".
 
 ## Input
 Путь к проекту и режим работы: $ARGUMENTS
 
 ### Режимы работы
 Определи режим из аргументов:
-- **Interactive (по умолчанию):** `$ARGUMENTS` = путь к проекту. Между фазами делай СТОП и жди подтверждения.
-- **Autonomous (ночной):** `$ARGUMENTS` содержит `--auto` или `--autonomous`. Между фазами НЕ останавливайся, принимай решения самостоятельно используя best practices. Логируй все решения в `docs/_onboard/synthesis/decisions-log.md`.
+- **Interactive (по умолчанию):** $ARGUMENTS = путь к проекту. Между фазами делай СТОП и жди подтверждения.
+- **Autonomous (ночной):** $ARGUMENTS содержит `--auto` или `--autonomous`. Между фазами НЕ останавливайся, принимай решения самостоятельно используя best practices. Логируй все решения в `docs/_onboard/synthesis/decisions-log.md`.
 
 В автономном режиме:
 1. НЕ задавай вопросов пользователю — решай сам
 2. Все решения записывай в decisions-log.md с обоснованием
 3. Зоны разбивай по принципу "лучше больше мелких чем мало крупных"
-4. Домены создавай все найденные с confidence ≥ Medium
+4. Домены создавай все найденные с confidence >= Medium
 5. Если что-то непонятно — записывай в Notes & uncertainties, не блокируй процесс
 6. Обновляй progress.md после КАЖДОГО шага
+
+## Agents used
+- **studio-codebase-mapper** — анализирует отдельные зоны кодовой базы (Phase 2)
+- **studio-domain-extractor** — создаёт domain docs из промежуточных данных (Phase 4)
 
 ## Ключевой принцип: промежуточное хранилище
 
 Контекстное окно ограничено. Поэтому:
 1. **Никогда** не пытайся прочитать весь проект за раз
 2. Все находки записываются в `docs/_onboard/` — это рабочая директория онбординга
-3. Каждая зона анализируется отдельным sub-agent
+3. Каждая зона анализируется отдельным sub-agent (studio-codebase-mapper)
 4. Синтез происходит из файлов в `_onboard/`, а не из кода напрямую
 5. После завершения `_onboard/` остаётся как артефакт (можно удалить позже)
 
@@ -51,6 +48,7 @@ docs/_onboard/
 ├── 07-context-stack.md       → стек и архитектурные паттерны
 └── synthesis/                → финальный синтез
     ├── domain-plan.md        → план доменов (утверждённый пользователем)
+    ├── decisions-log.md      → решения (автономный режим)
     └── progress.md           → прогресс онбординга
 ```
 
@@ -207,21 +205,16 @@ find $ARGUMENTS -maxdepth 2 -type d | grep -v node_modules | grep -v .git | grep
 
 ### Для КАЖДОЙ зоны выполни:
 
-#### Step 2.1: Запусти sub-agent для зоны
-Для каждой зоны запускай отдельный Agent. Промпт для агента:
+#### Step 2.1: Запусти studio-codebase-mapper agent для зоны
+Для каждой зоны запускай отдельный studio-codebase-mapper agent. Передай агенту:
+- Имя зоны
+- Путь(и) зоны
+- Фокус анализа
+- Релевантный контекст из docs/_onboard/00-codebase-map.md
 
-```
-Ты анализируешь зону "[zone-name]" проекта для онбординга на documentation-first фреймворк.
-
-Путь(и): [paths]
-Фокус: [focus]
-
-Стек проекта (из docs/_onboard/00-codebase-map.md):
-[вставь релевантный контекст из codebase-map]
-
-ЗАДАЧА:
-1. Прочитай ВСЕ файлы в указанных путях (используй Glob + Read)
-2. Найди и запиши:
+Agent должен:
+1. Прочитать ВСЕ файлы в указанных путях (используя Glob + Read)
+2. Найти и записать:
 
 **Entities/Models:**
 - Имя, поля, типы
@@ -246,7 +239,7 @@ find $ARGUMENTS -maxdepth 2 -type d | grep -v node_modules | grep -v .git | grep
 - Error codes
 
 **Dependencies:**
-- Imports из ДРУГИХ зон (→ потенциальные интеграции между доменами)
+- Imports из ДРУГИХ зон (потенциальные интеграции между доменами)
 - Внешние API calls
 - Database queries (какие таблицы читает/пишет)
 
@@ -256,25 +249,22 @@ find $ARGUMENTS -maxdepth 2 -type d | grep -v node_modules | grep -v .git | grep
 - State machines
 - Saga/orchestration patterns
 
-Запиши ВСЕ находки в файл: docs/_onboard/zones/[zone-name].md
-Формат — структурированный markdown с таблицами.
-Будь ИСЧЕРПЫВАЮЩИМ — этот файл заменит чтение кода в будущем.
-```
+Результат записывается в `docs/_onboard/zones/[zone-name].md`.
 
 #### Step 2.2: Проверь результат
-После завершения sub-agent:
+После завершения studio-codebase-mapper:
 1. Прочитай `docs/_onboard/zones/[zone-name].md`
 2. Проверь что файл не пустой и содержит конкретные находки
-3. Если зона оказалась слишком большой (sub-agent не прочитал всё):
+3. Если зона оказалась слишком большой (agent не прочитал всё):
    - Раздели зону на подзоны
    - Добавь подзоны в `01-zones.md`
-   - Запусти sub-agent для каждой подзоны
+   - Запусти studio-codebase-mapper для каждой подзоны
 
 #### Step 2.3: Обнови прогресс
 После каждой зоны обнови `docs/_onboard/synthesis/progress.md` — отметь зону как done.
 
 ### Параллельный запуск
-Если зоны независимы — запускай до 3 sub-agents параллельно для ускорения. Зависимые зоны (zone-services зависит от zone-models) — последовательно.
+Если зоны независимы — запускай до 3 studio-codebase-mapper agents параллельно для ускорения. Зависимые зоны (zone-services зависит от zone-models) — последовательно.
 
 ### Шаблон zone файла
 
@@ -418,7 +408,7 @@ find $ARGUMENTS -maxdepth 2 -type d | grep -v node_modules | grep -v .git | grep
 - "Какие 3-5 создать первыми?"
 - "Есть ли implicit домены которых нет в коде?"
 
-**Autonomous:** Создай все домены с confidence ≥ Medium. Запиши в decisions-log: какие домены создаёшь и почему, какие пропустил (Low confidence). Приоритет: домены с наибольшим количеством entities.
+**Autonomous:** Создай все домены с confidence >= Medium. Запиши в decisions-log: какие домены создаёшь и почему, какие пропустил (Low confidence). Приоритет: домены с наибольшим количеством entities.
 
 Запиши подтверждённый/автоматический план в `docs/_onboard/synthesis/domain-plan.md`.
 
@@ -439,21 +429,16 @@ find $ARGUMENTS -maxdepth 2 -type d | grep -v node_modules | grep -v .git | grep
 
 НЕ читай код напрямую — все знания уже в zone-файлах.
 
-#### Step 4.2: Создай домен
-Запусти Agent для создания домена:
+#### Step 4.2: Создай домен через studio-domain-extractor
+Запусти studio-domain-extractor agent для каждого домена. Agent получает:
+- Имя домена и responsibility из domain-plan.md
+- Релевантные zone-файлы
+- Entity registry (строки для этого домена)
+- Event registry (строки для этого домена)
 
-```
-Создай domain docs для домена "[name]" на основе промежуточных данных онбординга.
-
-Прочитай:
-- docs/_onboard/synthesis/domain-plan.md
-- docs/_onboard/zones/[relevant-zones].md (только секции про этот домен)
-- docs/_onboard/03-entity-registry.md (строки для этого домена)
-- docs/_onboard/04-event-registry.md (строки для этого домена)
-
-Создай полную структуру домена в docs/domains/[name]/:
-1. Скопируй шаблоны: cp docs/domains/_template/* docs/domains/[name]/
-2. Заполни каждый файл из промежуточных данных:
+Agent создаёт полную структуру домена в `docs/domains/[name]/`:
+1. Копирует шаблоны: `cp docs/domains/_template/* docs/domains/[name]/`
+2. Заполняет каждый файл из промежуточных данных:
    - README.md — из domain hypothesis description
    - ubiquitous-language.md — из entity names, field names, event names
    - aggregates.md — из entities + relations + status enums → state machine
@@ -469,7 +454,6 @@ find $ARGUMENTS -maxdepth 2 -type d | grep -v node_modules | grep -v .git | grep
 - Используй Mermaid для state machines и ER diagrams
 - НЕ копируй код — описывай бизнес-логику своими словами
 - Domain docs содержат ТОЛЬКО бизнес-знание, НЕ реализацию
-```
 
 #### Step 4.3: Обнови meta-документы
 После создания всех доменов:
@@ -583,9 +567,9 @@ find $ARGUMENTS -maxdepth 2 -type d | grep -v node_modules | grep -v .git | grep
 ---
 
 ## Tone
-Ты — методичный архитектор-консультант. Ты:
-- Никогда не торопишься
-- Предпочитаешь записать находку в файл, чем держать в голове
-- Показываешь промежуточные результаты и ждёшь подтверждения
-- Честно говоришь "этой зоны не хватило, нужна ещё одна итерация"
-- Рекурсивно дробишь то что не помещается в контекст
+Методичный архитектор-консультант:
+- Никогда не торопится
+- Предпочитает записать находку в файл, чем держать в голове
+- Показывает промежуточные результаты и ждёт подтверждения
+- Честно говорит "этой зоны не хватило, нужна ещё одна итерация"
+- Рекурсивно дробит то что не помещается в контекст

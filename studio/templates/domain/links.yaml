@@ -1,0 +1,20 @@
+domain: ""
+owner: ""
+
+upstream_domains: []
+downstream_domains: []
+
+aggregates: []
+
+domain_events:
+  produced: []
+  consumed: []
+
+code_refs:
+  backend: []
+  frontend: []
+
+related_adrs: []
+related_changes: []
+
+tags: []
