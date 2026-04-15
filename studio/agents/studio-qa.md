@@ -34,6 +34,8 @@ CHG-ID передаётся от orchestrator.
 ### 1. Generate test cases
 Из каждого источника генерируй test cases:
 
+**MINIMUM COUNTS: HP >= 5, EC >= 5, ER >= 3, SEC >= 3. If your count is below these thresholds, add more test cases.**
+
 **Из acceptance criteria (02-product-spec.md):**
 - Каждый AC -> минимум 1 позитивный test case
 - Каждый AC -> минимум 1 негативный test case
@@ -73,6 +75,16 @@ CHG-ID передаётся от orchestrator.
 - Timezone / locale: если применимо
 - Long-running operations: timeout handling
 
+**ОБЯЗАТЕЛЬНО — Security tests (минимум 3):**
+- XSS: инъекция скриптов через пользовательский ввод
+- Injection: SQL/NoSQL injection через API параметры
+- IDOR: доступ к чужим ресурсам через манипуляцию ID
+- Brute-force: перебор кодов, токенов, ID
+- Rate limiting: проверка лимитов
+- Auth bypass: доступ без авторизации
+
+Без security tests — test plan НЕПОЛНЫЙ.
+
 ### 2. Test Plan (07-test-plan.md)
 Заполни `docs/changes/$CHG_ID/07-test-plan.md`:
 
@@ -81,10 +93,27 @@ CHG-ID передаётся от orchestrator.
 - Что НЕ тестируем (out of scope) и почему
 - Зависимости для тестирования (test env, data, external services)
 
+**data-test-id audit (ОБЯЗАТЕЛЬНО перед написанием тестов):**
+Прочитай таблицу data-test-id из 06-frontend-proposal.md. Проверь:
+1. Каждый interactive element имеет data-test-id?
+2. Каждый state container имеет data-test-id?
+3. Naming конвенция консистентна? (btn-, input-, form-, list-, state-, msg-)
+4. Нет дубликатов?
+5. Все error/success messages имеют selectors?
+
+Если data-test-id отсутствуют или неполные → записать как BLOCKING finding в cross-review-frontend-by-qa.md.
+
+Каждый test case ОБЯЗАН ссылаться на конкретный `data-test-id`:
+```
+- [ ] HP-001: Click [data-test-id="btn-start-game"] → [data-test-id="state-game-loading"] appears
+```
+
 **Happy path tests (checklist):**
 Основные сценарии которые ДОЛЖНЫ работать. Формат:
 
-- [ ] `HP-001`: [Описание] -- [Ожидаемый результат] -- Source: AC-X
+- [ ] `HP-001`: [Описание] -- [КОНКРЕТНЫЙ ожидаемый результат с точным значением] -- Source: AC-X
+> Примеры ХОРОШИХ результатов: "rating increases by exactly 24 points", "returns HTTP 409", "count shows 0"
+> Примеры ПЛОХИХ результатов: "should work correctly", "rating increases", "shows error"
 
 **Edge case tests (checklist):**
 Граничные значения и нетипичные сценарии. Формат:
@@ -189,6 +218,9 @@ CHG-ID передаётся от orchestrator.
 - [ ] Edge case тестов >= 5
 - [ ] Error case тестов >= 3
 - [ ] Permission тесты для всех ролей
+- [ ] **Каждый test case ссылается на data-test-id** (не CSS selectors, не XPath)
+- [ ] **data-test-id audit пройден** (все interactive elements покрыты)
+- [ ] **Нет test case без target selector**
 - [ ] Rollback plan описан с конкретными шагами и временем
 - [ ] Feature flag strategy определена (или обосновано почему не нужна)
 - [ ] Regression areas перечислены

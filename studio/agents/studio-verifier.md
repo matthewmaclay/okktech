@@ -57,25 +57,28 @@ Change package ID: `$ARGUMENTS` (формат CHG-XXXX)
 
 ### Step 3: Cross-Document Consistency
 
-Проверь консистентность МЕЖДУ документами:
+Проверь консистентность МЕЖДУ документами. Для КАЖДОЙ проверки укажи конкретные файлы и строки:
 
 **Product spec <-> Backend proposal:**
-- Каждый flow из spec покрыт API endpoints?
-- Все business rules реализованы в backend?
-- States & transitions совпадают?
+- Для КАЖДОГО flow из spec: найди соответствующий API endpoint в backend. Укажи: "Flow X (spec line Y) → endpoint Z (backend line W)"
+- Если flow не имеет endpoint → GAP
+- Все business rules (BR-N) реализованы? Укажи для каждого: "BR-N → [implementation location] или MISSING"
 
 **Product spec <-> Frontend proposal:**
-- Каждый flow из spec имеет UI surface?
-- Все states покрыты UI states?
-- Permissions совпадают?
+- Для КАЖДОГО flow: найди UI surface. "Flow X → surface Y" или MISSING
+- Все states из spec в frontend? "State X → frontend state Y" или MISSING
 
 **Backend <-> Frontend:**
-- Все API endpoints из backend используются в frontend?
-- Response format совпадает с тем что frontend ожидает?
+- Для КАЖДОГО endpoint в backend: используется ли в frontend? "Endpoint X → frontend usage Y" или ORPHANED
+- Error codes: каждый HTTP код из backend обрабатывается frontend? Укажи конкретно
+
+**openapi.yaml <-> Backend proposal:**
+- Endpoint count match? Paths match? Schemas match?
+- Если openapi.yaml ОТСУТСТВУЕТ — это CRITICAL GAP
 
 **Mockups <-> Product spec:**
-- Если mockups есть — все flows из spec визуализированы?
-- Нет ли в mockups состояний отсутствующих в spec?
+- Для КАЖДОГО flow: есть мокап? "Flow X → mockup Y" или MISSING
+- Если mockups отсутствуют — это CRITICAL GAP
 
 ### Step 4: Domain Doc Updates
 
@@ -100,6 +103,11 @@ Change package ID: `$ARGUMENTS` (формат CHG-XXXX)
 - Каждый инвариант из domain impact тестируется?
 
 ### Step 7: Write VERIFICATION.md
+
+> [!danger] MANDATORY OUTPUT
+> VERIFICATION.md — это ОСНОВНОЙ и ОБЯЗАТЕЛЬНЫЙ артефакт этого stage.
+> Если ты НЕ создал файл VERIFICATION.md — stage считается ПРОВАЛЕННЫМ.
+> Это не опциональный шаг. Это ВЕСЬ СМЫСЛ верификатора.
 
 Запиши `docs/changes/$ARGUMENTS/VERIFICATION.md`:
 
@@ -183,11 +191,15 @@ human_verification_needed: N
 ## Quality Gates
 
 Верификация считается PASS только когда:
+- [ ] **КРИТИЧНО:** VERIFICATION.md файл создан и записан на диск
 - [ ] Каждый AC из product spec traced to test case
 - [ ] Каждый инвариант из domain impact verified
 - [ ] Нет undocumented gaps
 - [ ] Cross-document consistency без критических issues
 - [ ] Domain docs обновлены per domain-impact
+- [ ] openapi.yaml существует (если есть API endpoints в backend-proposal)
+- [ ] Mockups существуют (если есть surfaces в frontend-proposal)
+- [ ] Нет [blocking] вопросов в 10-open-questions.md
 
 ## Return
 

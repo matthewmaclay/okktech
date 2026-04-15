@@ -144,6 +144,12 @@ CHG-ID и описание фичи передаются от orchestrator.
 - Время на откат (estimated)
 
 ### 4. OpenAPI Spec (openapi.yaml)
+
+> [!danger] MANDATORY: openapi.yaml — ALWAYS create this file when ANY endpoints exist. NO EXCEPTIONS.
+> Если change включает ЛЮБЫЕ API endpoints (REST или WebSocket messages с определённой структурой) — openapi.yaml ОБЯЗАТЕЛЕН.
+> Пропуск этого шага = ПРОВАЛ backend architect stage.
+> Без openapi.yaml frontend не имеет формального контракта и будет додумывать.
+
 Если change включает API endpoints:
 
 1. Создай `docs/changes/$CHG_ID/openapi.yaml`
@@ -160,9 +166,42 @@ CHG-ID и описание фичи передаются от orchestrator.
 
 Если change НЕ имеет API endpoints (data migration, event-only, config change) -- пропусти. Запиши в результат `has_openapi: false`.
 
+### 4.5. WebSocket Protocol Changes (если применимо)
+Если change модифицирует или добавляет WebSocket messages:
+
+1. Опиши в `04-system-analysis.md` секции "WebSocket Protocol":
+
+```markdown
+## WebSocket Protocol Changes
+
+### New messages
+
+| Direction | Type | Payload schema | Delivery | Recipients |
+|-----------|------|---------------|----------|------------|
+| C→S | messageType | `{ field: type, ... }` | fire-and-forget / ack | Server handler |
+| S→C | messageType | `{ field: type, ... }` | broadcast / unicast | Who receives |
+
+### Connection lifecycle
+- Subscribe: [как клиент подписывается на новые events]
+- Unsubscribe: [когда отписывается]
+- Reconnect: [что происходит при потере и восстановлении соединения]
+
+### Backward compatibility
+- [Как старые клиенты обрабатывают новые message types]
+```
+
+2. Добавь WebSocket messages в openapi.yaml как AsyncAPI-compatible описание или отдельную секцию
+
+**Self-check:** если system-analysis упоминает WebSocket — проверь что протокол описан по шаблону выше. Каждое WS сообщение ДОЛЖНО иметь: direction, type name, JSON payload schema, delivery semantics, recipients.
+
 ### 5. Update metadata
 - `metadata.yaml`: `status: analysis`
 - `10-open-questions.md`: добавь технические вопросы (если есть)
+
+### 5.5. Self-check (MANDATORY)
+Before returning, verify:
+1. If ANY endpoints were defined → `openapi.yaml` MUST exist. Check now.
+2. If `openapi.yaml` is missing and endpoints exist → CREATE IT IMMEDIATELY before returning.
 
 ### 6. Return result
 ```json
@@ -186,11 +225,13 @@ CHG-ID и описание фичи передаются от orchestrator.
 - `docs/changes/$CHG_ID/10-open-questions.md` (обновление)
 
 ## Quality gates
+- [ ] **КРИТИЧНО:** openapi.yaml создан (если есть API endpoints). Без него — stage FAILED
 - [ ] Все API endpoints описаны (метод, путь, request/response body, коды)
 - [ ] DB migration обратима или есть конкретный fallback
 - [ ] Failure modes >= 3, каждый с detection + mitigation
 - [ ] Backward compatibility проверена явно
-- [ ] openapi.yaml соответствует system-analysis (если есть endpoints)
+- [ ] openapi.yaml соответствует system-analysis (endpoints, schemas, error codes)
+- [ ] WebSocket protocol changes описаны (если применимо)
 - [ ] Нет блокирующих вопросов без ответа
 - [ ] Observability: метрики + логи + алерты описаны
 

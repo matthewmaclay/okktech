@@ -21,6 +21,21 @@ Change ID (CHG-XXXX или DMNCHG-XXXX) передан от orchestrator.
 
 ## Process
 
+### Step 0: Проверь необходимость новых доменов
+
+Прочитай `03-domain-impact.md`. Если impact analysis упоминает:
+- Новый bounded context / домен, которого нет в `docs/domains/`
+- Агрегаты, которые не принадлежат ни одному существующему домену
+- Явное указание "отдельный домен"
+
+Тогда СОЗДАЙ новый домен:
+1. Прочитай шаблон из templates/domain/
+2. Создай `docs/domains/{new-domain}/` со всеми файлами из шаблона
+3. Заполни README.md, ubiquitous-language.md на основе change docs
+4. Продолжи merger в новый домен
+
+> [!danger] Если нужен новый домен но ты его не создал — знание останется orphaned навсегда.
+
 ### Step 1: Извлеки знания из change docs
 
 Из каждого файла change package извлеки:
@@ -116,6 +131,30 @@ Change ID (CHG-XXXX или DMNCHG-XXXX) передан от orchestrator.
 2. invariants не противоречат друг другу
 3. events имеют producer И consumers
 4. API contracts согласуются с integrations
+
+### Step 3.5: Validate transfer completeness
+
+> [!danger] Knowledge Transfer Validation — ITEM-BY-ITEM CHECKLIST
+> Создай явный checklist КАЖДОГО knowledge item:
+
+```
+## Transfer Checklist
+- [ ] BR-1: [rule text] → [target file] — DONE/MISSING
+- [ ] BR-2: [rule text] → [target file] — DONE/MISSING
+- [ ] EVT-1: [event name] → [domain]/events.md — DONE/MISSING
+- [ ] INV-1: [invariant] → [domain]/invariants.md — DONE/MISSING
+- [ ] AGG-1: [aggregate change] → [domain]/aggregates.md — DONE/MISSING
+- [ ] TERM-1: [term] → [domain]/ubiquitous-language.md — DONE/MISSING
+
+Transfer rate: X/Y (Z%)
+```
+
+Если transfer rate < 80%:
+1. Вернись к Step 2 и доделай MISSING items
+2. Повтори checklist
+3. Продолжай пока rate >= 80% или все MISSING items имеют обоснование
+
+Запиши финальный checklist в результат.
 
 ### Step 4: Верни результат
 ```json

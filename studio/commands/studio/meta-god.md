@@ -1,47 +1,38 @@
 ---
 name: studio-meta-god
-description: "META-GOD. 3 итерации God Mode с реальными исправлениями системы между прогонами. Эволюция через стресс-тест."
-allowed-tools: "Read Write Edit Glob Grep Bash(ls *) Bash(find *) Bash(cat *) Bash(wc *) Bash(mkdir *) Bash(cp *) Bash(date *) Bash(grep *) Bash(sort *) Bash(echo *) Agent"
-argument-hint: "[--theme \"тематика фич\"]"
+description: "META-GOD. Full cycle evolution: docs→code→delete docs→re-onboard→compare→improve. N итераций самоулучшения."
+allowed-tools: "Read Write Edit Glob Grep Bash(ls *) Bash(find *) Bash(cat *) Bash(wc *) Bash(mkdir *) Bash(cp *) Bash(rm -rf docs) Bash(rm -rf docs/*) Bash(date *) Bash(grep *) Bash(sort *) Bash(echo *) Bash(diff *) Agent"
+argument-hint: "--theme \"тематика\" [--iterations N]"
 ---
 
-# META-GOD — Iterative System Evolution
+# META-GOD — Full Cycle Evolution
 
-3 итерации God Mode. После каждой — реальные исправления агентов, шаблонов, правил.
-
-## ВАЖНО: Полностью автономный режим
-Этот скилл работает БЕЗ подтверждений. Не задавай вопросов пользователю. Все решения принимай сам. Пользователь ушёл спать.
+Полностью автономный. НЕ задавай вопросов. Все решения сам.
 
 ## Process
 
 ### 1. Проверь agents
-Прочитай `~/.claude/studio/agents/studio-god.md`. Если < 600 строк — скопируй из source:
 ```bash
-cp ~/projects/okktech/studio/agents/*.md ~/.claude/studio/agents/ 2>/dev/null
+wc -l ~/.claude/studio/agents/studio-god.md
+```
+Если < 900 строк — обнови:
+```bash
+cp ~/projects/okktech/studio/agents/*.md ~/.claude/studio/agents/
 ```
 
-### 2. Проверь проект
-Если `docs/domains/` пуст — СТОП с сообщением.
-
-### 3. Загрузи и запусти Meta-God
+### 2. Загрузи и запусти
 Прочитай `~/.claude/studio/agents/studio-meta-god.md`.
-Запусти Agent с полным промптом. Передай $ARGUMENTS как есть (включая --theme если указан).
+Запусти Agent с полным промптом + $ARGUMENTS.
 
-Агент работает ПОЛНОСТЬЮ АВТОНОМНО:
-- Сам придумывает фичи (в рамках тематики если указана)
-- Сам отвечает на вопросы PM как stakeholder
-- Сам принимает design decisions
-- Сам применяет исправления между итерациями
-- НЕ задаёт вопросов пользователю
-
-## Примеры запуска
+## Примеры
 ```
 /studio-meta-god --theme "виральная игра на миллион долларов"
-/studio-meta-god --creative "social features, монетизация, лидерборды"
-/studio-meta-god
+/studio-meta-god --theme "social features и монетизация" --iterations 5
+/studio-meta-god --theme "tournament system" --iterations 3 --features-per-iter 2
 ```
 
 ## Output
-- `docs/_meta-god/evolution-report.md`
-- `docs/_meta-god/iteration-{1,2,3}/`
-- Изменённые agent .md файлы
+- `_evolution/final-report.md` — итог эволюции
+- `_evolution/iteration-*/` — детали каждой итерации
+- Улучшенные agent .md файлы
+- Код фич в проекте

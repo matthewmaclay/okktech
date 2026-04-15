@@ -52,13 +52,19 @@ Goal, actors, user stories/JTBD, flows (пронумерованные шаги)
 ```
 Если нарушен → ESCALATION GATE. Сообщи и предложи решение.
 
-#### 3.4 Изменения агрегатов, событий, терминов
+#### 3.4 Cross-domain Data Dependencies
+Если фича зависит от данных из ДРУГОГО домена (например, achievement проверяет tournament-win):
+- Явно документируй cross-domain query pattern (API call? event? shared read model?)
+- Укажи direction: кто владеет данными, кто читает
+- Проверь: нет ли circular dependency между доменами
+
+#### 3.5 Изменения агрегатов, событий, терминов
 Новые поля? Новые events? Новые термины? Anti-corruption layer?
 
-#### 3.5 Напиши 03-domain-impact.md
+#### 3.6 Напиши 03-domain-impact.md
 Affected contexts table, aggregate changes, domain events, invariants check, ACL, shared kernel risks.
 
-#### 3.6 Обнови domain docs
+#### 3.7 Обнови domain docs
 Если фича добавляет правила/события/инварианты → обнови соответствующие файлы.
 
 ### Finalize

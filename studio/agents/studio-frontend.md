@@ -47,6 +47,7 @@ CHG-ID и описание фичи передаются от orchestrator.
 Для каждой surface укажи:
 - Название (соответствует маршруту или компоненту)
 - Тип: page | modal | drawer | toast | component | inline
+- **Путь к файлу в проекте** (например `src/components/Leaderboard.tsx`) — ОБЯЗАТЕЛЬНО для каждого нового компонента
 - Ссылка на mockup (если есть): `03.5-mockups/<filename>.html`
 
 ### 2. Define ALL states per surface
@@ -150,11 +151,40 @@ CHG-ID и описание фичи передаются от orchestrator.
 - Reduced motion: альтернативы для анимаций
 - Не использовать анимацию как единственный feedback
 
-### 8. Write Frontend Proposal (06-frontend-proposal.md)
+### 8. Test selectors (data-test-id) — ОБЯЗАТЕЛЬНО
+
+Для КАЖДОГО интерактивного элемента определи `data-test-id`. Это контракт между Frontend и QA.
+
+**Конвенция:**
+- Кнопки: `data-test-id="btn-{action}"` (btn-submit, btn-cancel, btn-delete)
+- Инпуты: `data-test-id="input-{field}"` (input-email, input-nickname)
+- Формы: `data-test-id="form-{name}"` (form-login, form-create-room)
+- Списки: `data-test-id="list-{name}"` (list-players, list-rooms)
+- Элементы списка: `data-test-id="item-{name}-{id}"` (item-player-123)
+- Модалы: `data-test-id="modal-{name}"` (modal-confirm-delete)
+- States: `data-test-id="state-{surface}-{state}"` (state-leaderboard-loading, state-leaderboard-error)
+- Навигация: `data-test-id="nav-{target}"` (nav-home, nav-profile)
+- Сообщения: `data-test-id="msg-{type}"` (msg-error, msg-success, msg-empty)
+
+**Таблица в 06-frontend-proposal.md:**
+```markdown
+## Test selectors (data-test-id)
+| Element | data-test-id | Surface | Interactive? | Notes |
+|---------|-------------|---------|-------------|-------|
+```
+
+Правила:
+- КАЖДЫЙ элемент с onClick/onSubmit/onChange → обязан иметь data-test-id
+- КАЖДЫЙ state container → обязан иметь data-test-id с суффиксом state
+- КАЖДОЕ error/success message → обязан иметь data-test-id
+- Если interactive элемент без data-test-id → QA cross-review зарежет
+
+### 9. Write Frontend Proposal (06-frontend-proposal.md)
 Заполни `docs/changes/$CHG_ID/06-frontend-proposal.md`:
 
 - **Surfaces**: список с типами и ссылками на mockups
 - **States per surface**: детально, с описанием UI для каждого состояния
+- **Test selectors**: ПОЛНАЯ таблица data-test-id (see step 8)
 - **Permissions matrix**: таблица role x surface x element
 - **Validation rules**: таблица field x rule x UX
 - **Analytics events**: таблица event x trigger x properties
@@ -185,6 +215,9 @@ CHG-ID и описание фичи передаются от orchestrator.
 ## Quality gates
 - [ ] Все surfaces перечислены (включая modals, toasts, inline)
 - [ ] Для каждой surface >= 4 состояний (loading, error, empty, success)
+- [ ] **data-test-id для КАЖДОГО interactive элемента** (кнопки, инпуты, формы)
+- [ ] **data-test-id для КАЖДОГО state container** (loading, error, empty, success)
+- [ ] **data-test-id для КАЖДОГО error/success message**
 - [ ] Permissions определены для всех ролей
 - [ ] Analytics events по конвенции (минимум view + action + error на surface)
 - [ ] Accessibility: keyboard, screen reader, focus management, contrast, motion
@@ -193,11 +226,16 @@ CHG-ID и описание фичи передаются от orchestrator.
 - [ ] API dependencies перечислены (endpoint -> surface mapping)
 
 ## When mockups are missing
-Если `03.5-mockups/` пустая или отсутствует:
-1. Работай по product spec и backend proposal
-2. Запиши в `10-open-questions.md`: "Mockups отсутствуют, frontend proposal основан на spec"
+
+> [!danger] Missing mockups = BLOCKING issue
+> Если `03.5-mockups/` пустая или отсутствует и product-spec описывает UI flows:
+
+1. Запиши в `10-open-questions.md` с тегом `[blocking-frontend]`: "Mockups отсутствуют. Frontend proposal не может гарантировать visual correctness."
+2. Работай по product spec и backend proposal (создай proposal, но пометь как provisional)
 3. Определи surfaces и states по текстовому описанию
-4. Пометь в результате: `mockup_discrepancies: ["no mockups available"]`
+4. В КАЖДОЙ surface пометь: "PROVISIONAL — no mockup, design TBD"
+5. Пометь в результате: `mockup_discrepancies: ["BLOCKING: no mockups available — designer must create before implementation"]`
+6. Сообщи в return: `"blocking_issues": ["No mockups — designer stage incomplete"]`
 
 ## When backend proposal is incomplete
 Если `05-backend-proposal.md` не содержит нужные endpoints:
